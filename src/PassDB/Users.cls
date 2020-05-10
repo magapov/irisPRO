@@ -10,7 +10,7 @@ Property age As %Decimal;
 
 Property sex As %String;
 
-Method createUser(fname As %String, sname As %String, age As %Numeric, sex As %Numeric) As %Boolean
+Method createUser(fname As %String, sname As %String, age As %Decimal, sex As %String) As %Boolean
 {
 	set ##this.fname = fname
 	set ##this.sname = sname
