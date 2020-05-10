@@ -1,4 +1,4 @@
-Class Company.DataProvider Extends %CSP.Page
+Class PassDB.DataProvider Extends %CSP.Page
 {
 
 ClassMethod OnPage() As %Status

@@ -21,8 +21,12 @@ ClassMethod SaveUser() As %Status
     set requestUserObj.fname = %request.Get("fname")
     set requestUserObj.sname = %request.Get("sname")
     set requestUserObj.fage = %request.Get("fage")
+<<<<<<< HEAD
     set requestUserObj.fыуч = %request.Get("fsex")
     set result = ##class(Company.Users).SaveUser(requestUserObj)
+=======
+    set result = ##class(PassDB.Users).SaveUser(requestUserObj)
+>>>>>>> b4c92d9375b2903687fb8a729c3dc37997d4e602
     write result.%ToJSON()
   }
   Catch exception {
@@ -45,7 +49,7 @@ ClassMethod test() As %Status
 
 ClassMethod Users() As %Status
 {
-  set usersObj = ##class(Company.Users).%New()
+  set usersObj = ##class(PassDB.Users).%New()
   do usersObj.getUsers(.usersArray)
   write usersArray.%ToJSON()
   Return $$$OK
