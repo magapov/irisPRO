@@ -36,7 +36,7 @@ Method getUsers(data) As %String
     &sql(FETCH MyCursor)
     if (SQLCODE) quit
 
-    set obj = {"id": (id), "first name": (fname), "second name": (sname), "age": (age), "sex": (sex)}
+    set obj = {"id": (id), "fname": (fname), "sname": (sname), "age": (age), "sex": (sex)}
     do data.%Push(obj)
  	}
  	&sql(CLOSE MyCursor)
