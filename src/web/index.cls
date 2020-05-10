@@ -66,7 +66,7 @@ var user_form_template = {
     {view: "text", name: "fname", label: "First name"},
     {view: "text", name: "sname", label: "Surname"},
     {view: "text", name: "age", label: "Age"},
-    {view: "text", name: "age", label: "Sex"},
+    {view: "text", name: "sex", label: "Sex"},
     { view:"button",  value:"Submit", id:"btn", click:function(){
       var values = this.getFormView().getValues();
       webix.ajax().post("/api/users/save", values, submitUser);
