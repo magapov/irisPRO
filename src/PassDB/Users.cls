@@ -2,11 +2,15 @@
 Class Company.Users Extends %Persistent
 {
 
-Property name As %String;
+Property fname As %String;
+
+Property sname As %String;
 
 Property age As %Decimal;
 
 Property sex As %Decimal;
+
+Property ID As %Integer;
 
 Storage Default
 {
