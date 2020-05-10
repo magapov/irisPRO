@@ -49,7 +49,7 @@ var menu_data = [
 var user_list_template = {
   id:"tab1_content",
   view:"list",
-  template:"<div style='padding-left:18px'> Name:#name#, age:#age# </div>",
+  template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
   type:{
     height:60
   },
