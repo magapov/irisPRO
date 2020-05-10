@@ -1,5 +1,5 @@
 /// Компании
-Class Company.Company Extends %Persistent
+Class PassDB.Company Extends %Persistent
 {
 
 Property name As %String;
@@ -21,11 +21,11 @@ Storage Default
 <Value>inn</Value>
 </Value>
 </Data>
-<DataLocation>^Company.CompanyD</DataLocation>
+<DataLocation>^PassDB.CompanyD</DataLocation>
 <DefaultData>CompanyDefaultData</DefaultData>
-<IdLocation>^Company.CompanyD</IdLocation>
-<IndexLocation>^Company.CompanyI</IndexLocation>
-<StreamLocation>^Company.CompanyS</StreamLocation>
+<IdLocation>^PassDB.CompanyD</IdLocation>
+<IndexLocation>^PassDB.CompanyI</IndexLocation>
+<StreamLocation>^PassDB.CompanyS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 
