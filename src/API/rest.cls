@@ -19,7 +19,9 @@ ClassMethod SaveUser() As %Status
   Try {
     set requestUserObj = {}
     set requestUserObj.fname = %request.Get("fname")
+    set requestUserObj.sname = %request.Get("sname")
     set requestUserObj.fage = %request.Get("fage")
+    set requestUserObj.fыуч = %request.Get("fsex")
     set result = ##class(Company.Users).SaveUser(requestUserObj)
     write result.%ToJSON()
   }

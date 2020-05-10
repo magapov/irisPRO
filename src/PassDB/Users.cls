@@ -10,8 +10,6 @@ Property age As %Decimal;
 
 Property sex As %Decimal;
 
-Property ID As %Integer;
-
 Storage Default
 {
 <Data name="UsersDefaultData">
@@ -29,6 +27,15 @@ Storage Default
 </Value>
 <Value name="5">
 <Value>Height</Value>
+</Value>
+<Value name="6">
+<Value>fname</Value>
+</Value>
+<Value name="7">
+<Value>sname</Value>
+</Value>
+<Value name="8">
+<Value>ID</Value>
 </Value>
 </Data>
 <DataLocation>^Company.UsersD</DataLocation>
