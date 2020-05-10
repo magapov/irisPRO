@@ -1,43 +1,19 @@
 /// all users
-Class Company.Users Extends %Persistent
+Class PassDB.Users Extends %Persistent
 {
 
-Property name As %String;
+Property fname As %String;
+
+Property sname As %String;
 
 Property age As %Decimal;
 
-Property sex As %Decimal;
+Property sex As %String;
 
-Storage Default
+Method createUser(fname As %String, sname As %String, age As %Numeric, sex As %Numeric) As %Boolean
 {
-<Data name="UsersDefaultData">
-<Value name="1">
-<Value>%%CLASSNAME</Value>
-</Value>
-<Value name="2">
-<Value>name</Value>
-</Value>
-<Value name="3">
-<Value>age</Value>
-</Value>
-<Value name="4">
-<Value>sex</Value>
-</Value>
-<Value name="5">
-<Value>Height</Value>
-</Value>
-</Data>
-<DataLocation>^Company.UsersD</DataLocation>
-<DefaultData>UsersDefaultData</DefaultData>
-<IdLocation>^Company.UsersD</IdLocation>
-<IndexLocation>^Company.UsersI</IndexLocation>
-<StreamLocation>^Company.UsersS</StreamLocation>
-<Type>%Storage.Persistent</Type>
-}
-
-Method createUser(name As %String, age As %Numeric, sex As %Numeric) As %Boolean
-{
-	set ##this.name = name
+	set ##this.fname = fname
+	set ##this.sname = sname
 	set ##this.age = age
 	set ##this.sex = sex
 	set result = ##this.%Save()
@@ -49,8 +25,8 @@ Method getUsers(data) As %String
 	set data = []
 	&sql(
 	 	DECLARE MyCursor CURSOR FOR
-	    SELECT id, name, age, sex
-	    INTO :id, :name, :age, :sex
+	    SELECT id, fname, sname, age, sex
+	    INTO :id, :fname, :sname, :age, :sex
 	    FROM Company.Users
  	)
  	//вариант в массив INTO :singleUserData()
@@ -60,7 +36,7 @@ Method getUsers(data) As %String
     &sql(FETCH MyCursor)
     if (SQLCODE) quit
 
-    set obj = {"id": (id), "name": (name), "age": (age), "sex": (sex)}
+    set obj = {"id": (id), "first name": (fname), "second name": (sname), "age": (age), "sex": (sex)}
     do data.%Push(obj)
  	}
  	&sql(CLOSE MyCursor)
@@ -72,8 +48,10 @@ ClassMethod SaveUser(requestUserObj) As %Status
 {
   set result = {}
   set obj = ##class(Company.Users).%New()
-  set obj.name = requestUserObj.fname
+  set obj.fname = requestUserObj.fname
+  set obj.sname = requestUserObj.sname
   set obj.age = requestUserObj.fage
+  set obj.sex = requestUserObj.sex
   set saveResult = obj.%Save()
 
   if $$$ISOK(saveResult) set result = {"result": true}
@@ -87,7 +65,7 @@ ClassMethod SaveUser(requestUserObj) As %Status
 ClassMethod sampleDynamicRequest(paramAge)
 {
 	set sqlRaw = "select * from {%1%} where age>?"
-	set table = "Company.Users"
+	set table = "PassDB.Users"
 	set sql = $Replace(sqlRaw, "{%1%}", table)
 
 	set sqlObj = ##class(%SQL.Statement).%New()
@@ -111,6 +89,33 @@ ClassMethod sampleStaticRequest()
      WRITE nameVar," is ",ageVar," years",!
     &sql(FETCH C1) }
   &sql(CLOSE C1)
+}
+
+Storage Default
+{
+<Data name="UsersDefaultData">
+<Value name="1">
+<Value>%%CLASSNAME</Value>
+</Value>
+<Value name="2">
+<Value>fname</Value>
+</Value>
+<Value name="3">
+<Value>sname</Value>
+</Value>
+<Value name="4">
+<Value>age</Value>
+</Value>
+<Value name="5">
+<Value>sex</Value>
+</Value>
+</Data>
+<DataLocation>^PassDB.UsersD</DataLocation>
+<DefaultData>UsersDefaultData</DefaultData>
+<IdLocation>^PassDB.UsersD</IdLocation>
+<IndexLocation>^PassDB.UsersI</IndexLocation>
+<StreamLocation>^PassDB.UsersS</StreamLocation>
+<Type>%Storage.Persistent</Type>
 }
 
 }
