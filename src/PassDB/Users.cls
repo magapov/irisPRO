@@ -27,7 +27,7 @@ Method getUsers(data) As %String
 	 	DECLARE MyCursor CURSOR FOR
 	    SELECT id, fname, sname, age, sex
 	    INTO :id, :fname, :sname, :age, :sex
-	    FROM Company.Users
+	    FROM PassDB.Users
  	)
  	//вариант в массив INTO :singleUserData()
  	&sql(OPEN MyCursor)
@@ -47,7 +47,7 @@ Method getUsers(data) As %String
 ClassMethod SaveUser(requestUserObj) As %Status
 {
   set result = {}
-  set obj = ##class(Company.Users).%New()
+  set obj = ##class(PassDB.Users).%New()
   set obj.fname = requestUserObj.fname
   set obj.sname = requestUserObj.sname
   set obj.age = requestUserObj.fage
