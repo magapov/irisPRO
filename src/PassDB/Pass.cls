@@ -53,7 +53,7 @@ ClassMethod SavePass(requestPassObj) As %Status
 {
   set result = {}
   set obj = ##class(PassDB.Pass).%New()
-#;   set obj.user = requestPassObj.user
+  do Pass.userSetObjectId(user)
   set obj.docID = requestPassObj.docID
   set obj.reasonType = requestPassObj.reasonType
   set obj.sourceAddr = requestPassObj.sourceAddr

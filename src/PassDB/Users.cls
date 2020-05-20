@@ -49,18 +49,19 @@ ClassMethod getUsernames(data) As %String
 	set data = []
 	&sql(
 	 	DECLARE MyCursor CURSOR FOR
-	    SELECT id, name
-	    INTO :id, :name
+	    SELECT id, fname, sname
+	    INTO :id, :fname, :sname
 	    FROM PassDB.Users
  	)
+	
  	//вариант в массив INTO :singleUserData()
  	&sql(OPEN MyCursor)
  	
   FOR { 
     &sql(FETCH MyCursor)
     if (SQLCODE) quit
-
-    set obj = {"id": (id), "value": (name)}
+	set fullname = fname_" "_sname
+    set obj = {"id": (id), "value": (fullname)}
     do data.%Push(obj)
  	}
  	&sql(CLOSE MyCursor)

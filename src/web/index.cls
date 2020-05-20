@@ -113,7 +113,7 @@ var passes_form_template = {
     {view: "text", name: "reasonType", label: "reasonType"},
     {view: "text", name: "sourceAddr", label: "sourceAddr"},
     {view: "text", name: "dstAddr", label: "dstAddr"},
-  // {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
+    {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
    // {view:"datatable", 
    // columns: [
    //     { map:"(date)#enddate#",editor:"date",header:"End date", width:120}
