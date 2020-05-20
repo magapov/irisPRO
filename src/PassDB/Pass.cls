@@ -30,7 +30,7 @@ Method getPasses(data) As %String
     set data = []
     &sql(
         DECLARE MyCursor CURSOR FOR
-        SELECT id, user, docID, date, reasonType, sourceAddr, dstAddr
+        SELECT ID, "date", docID, dstAddr, reasonType, sourceAddr, "user"
         INTO :id, :user, :docID, :date, :reasonType, :sourceAddr, :dstAddr
         FROM PassDB.Pass
     )

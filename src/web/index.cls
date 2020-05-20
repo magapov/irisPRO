@@ -95,7 +95,7 @@ var user_form_template = {
 var passes_list_template = {
   id:"tab3_content",
   view:"list",
-  template:"<div style='padding-left:18px'> First user:#user#, document ID:#docId#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
+  template:"<div style='padding-left:18px'> First user:#user#, document ID:#docID#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
   type:{
     height:60
   },
