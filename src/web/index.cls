@@ -43,6 +43,12 @@ ClassMethod body() As %Status
 var menu_data = [
 	{id: "tab1", icon: "mdi mdi-table", value:"Users list"},
 	{id: "tab2", icon: "mdi mdi-pencil", value:"User form"},
+  {id: "tab3", icon: "mdi mdi-table", value:"Passes list"},
+	{id: "tab4", icon: "mdi mdi-pencil", value:"Passes form"},
+  //{id: "tab5", icon: "mdi mdi-table", value:"Organizations list"},
+  //{id: "tab6", icon: "mdi mdi-pencil", value:"Organizations form"},
+  //{id: "tab7", icon: "mdi mdi-table", value:"Medical facility list"},
+  //{id: "tab8", icon: "mdi mdi-pencil", value:"Medical facility form"},
 	//{id: "tab3", icon: "mdi mdi-book", value:"Documentation"}
 ];
 
@@ -73,6 +79,33 @@ var user_form_template = {
     }}
   ]};
 
+var passes_list_template = {
+  id:"tab3_content",
+  view:"list",
+  template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
+  type:{
+    height:60
+  },
+  select:true,
+  url:"/api/users/get"
+  };
+
+// Single user form template
+var passes_form_template = {
+  id:"tab4_content",
+  view:"form",
+  width: "400",
+  elements:[
+    {view: "text", name: "fname_f", label: "First name"},
+    {view: "text", name: "sname_f", label: "Surname"},
+    {view: "text", name: "age_f", label: "Age"},
+    {view: "text", name: "sex_f", label: "Sex"},
+    { view:"button",  value:"Submit", id:"btn", click:function(){
+      var values = this.getFormView().getValues();
+      webix.ajax().post("/api/users/save", values, submitUser);
+    }}
+  ]};
+
 var ui_template = {
   height: '100%',
   rows: [
@@ -83,7 +116,7 @@ var ui_template = {
             $$("$sidebar1").toggle();
           }
         },
-        { view: "label", label: "IRIS example web application for test purpose"},
+        { view: "label", label: "Заказ цифровых пропусков   "},
       ]
     },
     { 
@@ -105,7 +138,8 @@ var ui_template = {
       { id:"t1_content",
           cells:[
             user_list_template,
-            user_form_template
+            user_form_template,
+            user_list_template,
         ]   
       }
     ]}

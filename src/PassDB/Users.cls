@@ -44,6 +44,30 @@ Method getUsers(data) As %String
  	quit
 }
 
+ClassMethod getUsersNames(data) As %String
+{
+	set data = []
+	&sql(
+	 	DECLARE MyCursor CURSOR FOR
+	    SELECT id, name
+	    INTO :id, :name
+	    FROM PassDB.Users
+ 	)
+ 	//вариант в массив INTO :singleUserData()
+ 	&sql(OPEN MyCursor)
+ 	
+  FOR { 
+    &sql(FETCH MyCursor)
+    if (SQLCODE) quit
+
+    set obj = {"id": (id), "value": (name)}
+    do data.%Push(obj)
+ 	}
+ 	&sql(CLOSE MyCursor)
+ 	
+ 	quit
+}
+
 ClassMethod SaveUser(requestUserObj) As %Status
 {
   set result = {}
