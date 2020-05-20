@@ -121,6 +121,14 @@ var passes_form_template = {
    // data: [
     //    {id:"1", startdate:"2013-09-26", enddate:"2011-05-15"},
     //]},
+    {
+        view: "datepicker", 
+        value: new Date(2017,10,9), 
+        label: "Select Date", 
+        timepicker: true,
+        name: "date"
+    },
+    
 
    { view:"button",  value:"Submit", id:"btn2", click:function(){
      console.log('button Pass')

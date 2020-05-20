@@ -62,17 +62,17 @@ ClassMethod UsernamesList() As %Status
   Return $$$OK
 }
 
-ClassMethod SavePass(requestUserObj) As %Status
+ClassMethod SavePass(requestPassObj) As %Status
 {
   Try {
-    set requestUserObj = {}
-    set requestUserObj.docID = %request.Get("docID")
-    #; set requestUserObj.date = %request.Get("date")
-    set requestUserObj.reasonType = %request.Get("reasonType")
-    set requestUserObj.sourceAddr = %request.Get("sourceAddr")
-    set requestUserObj.dstAddr = %request.Get("dstAddr")
-    set requestUserObj.user = %request.Get("user")
-    set result = ##class(PassDB.Pass).SavePass(requestUserObj)
+    set requestPassObj = {}
+    set requestPassObj.docID = %request.Get("docID")
+    set requestPassObj.date = %request.Get("date")
+    set requestPassObj.reasonType = %request.Get("reasonType")
+    set requestPassObj.sourceAddr = %request.Get("sourceAddr")
+    set requestPassObj.dstAddr = %request.Get("dstAddr")
+    set requestPassObj.user = %request.Get("user")
+    set result = ##class(PassDB.Pass).SavePass(requestPassObj)
     write result.%ToJSON()
   }
   Catch exception {

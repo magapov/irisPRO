@@ -5,7 +5,7 @@ Property user As PassDB.Users;
 
 Property docID As %Integer;
 
-Property date As %Date;
+Property date As %String;
 
 Property reasonType As %String;
 
@@ -31,7 +31,7 @@ Method getPasses(data) As %String
     &sql(
         DECLARE MyCursor CURSOR FOR
         SELECT ID, "date", docID, dstAddr, reasonType, sourceAddr, "user"
-        INTO :id, :user, :docID, :date, :reasonType, :sourceAddr, :dstAddr
+        INTO :id, :date, :docID, :dstAddr, :reasonType, :sourceAddr, :user
         FROM PassDB.Pass
     )
 
@@ -53,7 +53,8 @@ ClassMethod SavePass(requestPassObj) As %Status
 {
   set result = {}
   set obj = ##class(PassDB.Pass).%New()
-  do Pass.userSetObjectId(user)
+  do obj.userSetObjectId(requestPassObj.user)
+  set obj.date = requestPassObj.date
   set obj.docID = requestPassObj.docID
   set obj.reasonType = requestPassObj.reasonType
   set obj.sourceAddr = requestPassObj.sourceAddr
