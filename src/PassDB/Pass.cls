@@ -15,7 +15,7 @@ Property dstAddr As %String;
 
 Method createPass(user As PassDB.Users, docID As %Integer, date As %Date, reasonType As %String, sourceAddr As %String, dstAddr As %String) As %Boolean
 {
-    set ##this.user = user
+    do Pass.userSetObjectId(user)
     set ##this.docID = docID
     set ##this.date = date
     set ##this.reasonType = reasonType
@@ -53,11 +53,11 @@ ClassMethod SavePass(requestPassObj) As %Status
 {
   set result = {}
   set obj = ##class(PassDB.Pass).%New()
-  set obj.user = requestUserObj.user
-  set obj.docID = requestUserObj.docID
-  set obj.reasonType = requestUserObj.reasonType
-  set obj.sourceAddr = requestUserObj.sourceAddr
-  set obj.dstAddr = requestUserObj.dstAddr
+#;   set obj.user = requestPassObj.user
+  set obj.docID = requestPassObj.docID
+  set obj.reasonType = requestPassObj.reasonType
+  set obj.sourceAddr = requestPassObj.sourceAddr
+  set obj.dstAddr = requestPassObj.dstAddr
   set saveResult = obj.%Save()
 
   if $$$ISOK(saveResult) set result = {"result": true}

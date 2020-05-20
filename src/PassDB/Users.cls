@@ -44,7 +44,7 @@ Method getUsers(data) As %String
  	quit
 }
 
-ClassMethod getUsersNames(data) As %String
+ClassMethod getUsernames(data) As %String
 {
 	set data = []
 	&sql(

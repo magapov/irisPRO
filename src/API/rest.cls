@@ -10,8 +10,9 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
   <Route Url="/test" Method="GET" Call="test"/>
   <Route Url="/users/get" Method="GET" Call="Users"/>
   <Route Url="/users/save" Method="POST" Call="SaveUser"/>
-  <Route Url="/passes/get" Method="GET" Call="Users"/>
-  <Route Url="/passes/save" Method="POST" Call="SaveUser"/>
+  <Route Url="/users/getusernames" Method="GET" Call="UsernamesList"/>
+  <Route Url="/passes/get" Method="GET" Call="Passes"/>
+  <Route Url="/passes/save" Method="POST" Call="SavePass"/>
   <Route Url="/_spec" Method="GET" Call="SwaggerSpec" Cors="true"/>
 </Routes>
 }
@@ -53,14 +54,24 @@ ClassMethod Users() As %Status
   Return $$$OK
 }
 
-ClassMethod SavePass() As %Status
+ClassMethod UsernamesList() As %Status
+{
+  set usersObj = ##class(PassDB.Users).%New()
+  do usersObj.getUsernames(.usersArray)
+  write usersArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod SavePass(requestUserObj) As %Status
 {
   Try {
     set requestUserObj = {}
-    #; set requestUserObj.fname = %request.Get("fname_f")
-    #; set requestUserObj.sname = %request.Get("sname_f")
-    #; set requestUserObj.age = %request.Get("age_f")
-    #; set requestUserObj.sex = %request.Get("sex_f")
+    set requestUserObj.docID = %request.Get("docID")
+    #; set requestUserObj.date = %request.Get("date")
+    set requestUserObj.reasonType = %request.Get("reasonType")
+    set requestUserObj.sourceAddr = %request.Get("sourceAddr")
+    set requestUserObj.dstAddr = %request.Get("dstAddr")
+    #; set requestUserObj.user = %request.Get("user")
     set result = ##class(PassDB.Pass).SavePass(requestUserObj)
     write result.%ToJSON()
   }
@@ -70,6 +81,14 @@ ClassMethod SavePass() As %Status
     write result.%ToJSON()
   }
   Quit $$$OK
+}
+
+ClassMethod Passes() As %Status
+{
+  set passsObj = ##class(PassDB.Pass).%New()
+  do passsObj.getPasses(.passesArray)
+  write passesArray.%ToJSON()
+  Return $$$OK
 }
 
 ClassMethod SwaggerSpec() As %Status

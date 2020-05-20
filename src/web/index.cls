@@ -40,6 +40,18 @@ ClassMethod body() As %Status
     webix.message(message);
   }
 
+  var submitPass = (rawData) => {
+    let data = JSON.parse(rawData);
+    let message;
+    if (data.result) {
+      message = { type:"success", text: "Pass is saved", expire:-1};
+      $$('tab4_content').clear();
+    }
+    else
+      message = { type:"error", text: data.message, expire:-1};
+    webix.message(message);
+  } 
+
 var menu_data = [
 	{id: "tab1", icon: "mdi mdi-table", value:"Users list"},
 	{id: "tab2", icon: "mdi mdi-pencil", value:"User form"},
@@ -61,7 +73,7 @@ var user_list_template = {
   },
   select:true,
   url:"/api/users/get"
-  };
+};
 
 // Single user form template
 var user_form_template = {
@@ -73,7 +85,8 @@ var user_form_template = {
     {view: "text", name: "sname_f", label: "Surname"},
     {view: "text", name: "age_f", label: "Age"},
     {view: "text", name: "sex_f", label: "Sex"},
-    { view:"button",  value:"Submit", id:"btn", click:function(){
+    { view:"button",  value:"Submit", id:"btn1", click:function(){
+      console.log('button user');
       var values = this.getFormView().getValues();
       webix.ajax().post("/api/users/save", values, submitUser);
     }}
@@ -82,28 +95,38 @@ var user_form_template = {
 var passes_list_template = {
   id:"tab3_content",
   view:"list",
-  template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
+  template:"<div style='padding-left:18px'> First user:#user#, document ID:#docId#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
   type:{
     height:60
   },
   select:true,
-  url:"/api/users/get"
+  url:"/api/passes/get"
   };
 
-// Single user form template
+// Single pass form template
 var passes_form_template = {
   id:"tab4_content",
   view:"form",
   width: "400",
   elements:[
-    {view: "text", name: "fname_f", label: "First name"},
-    {view: "text", name: "sname_f", label: "Surname"},
-    {view: "text", name: "age_f", label: "Age"},
-    {view: "text", name: "sex_f", label: "Sex"},
-    { view:"button",  value:"Submit", id:"btn", click:function(){
-      var values = this.getFormView().getValues();
-      webix.ajax().post("/api/users/save", values, submitUser);
-    }}
+    {view: "text", name: "docID", label: "docID"},
+    {view: "text", name: "reasonType", label: "reasonType"},
+    {view: "text", name: "sourceAddr", label: "sourceAddr"},
+    {view: "text", name: "dstAddr", label: "dstAddr"},
+  // {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
+   // {view:"datatable", 
+   // columns: [
+   //     { map:"(date)#enddate#",editor:"date",header:"End date", width:120}
+   // ],
+   // data: [
+    //    {id:"1", startdate:"2013-09-26", enddate:"2011-05-15"},
+    //]},
+
+   { view:"button",  value:"Submit", id:"btn2", click:function(){
+     console.log('button Pass')
+     var values = this.getFormView().getValues();
+     webix.ajax().post("/api/passes/save", values, submitPass);
+   }}
   ]};
 
 var ui_template = {
@@ -139,7 +162,9 @@ var ui_template = {
           cells:[
             user_list_template,
             user_form_template,
-            user_list_template,
+            passes_list_template,
+            passes_form_template,
+
         ]   
       }
     ]}
