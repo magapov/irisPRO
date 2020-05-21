@@ -52,15 +52,40 @@ ClassMethod body() As %Status
     webix.message(message);
   } 
 
+  var submitMedical = (rawData) => {
+    let data = JSON.parse(rawData);
+    let message;
+    if (data.result) {
+      message = { type:"success", text: "Medical is saved", expire:-1};
+      $$('tab6_content').clear();
+    }
+    else
+      message = { type:"error", text: data.message, expire:-1};
+    webix.message(message);
+  } 
+
+  var submitWork = (rawData) => {
+    let data = JSON.parse(rawData);
+    let message;
+    if (data.result) {
+      message = { type:"success", text: "Work organisation is saved", expire:-1};
+      $$('tab8_content').clear();
+    }
+    else
+      message = { type:"error", text: data.message, expire:-1};
+    webix.message(message);
+  } 
+
 var menu_data = [
 	{id: "tab1", icon: "mdi mdi-table", value:"Users list"},
 	{id: "tab2", icon: "mdi mdi-pencil", value:"User form"},
   {id: "tab3", icon: "mdi mdi-table", value:"Passes list"},
 	{id: "tab4", icon: "mdi mdi-pencil", value:"Passes form"},
-  //{id: "tab5", icon: "mdi mdi-table", value:"Organizations list"},
-  //{id: "tab6", icon: "mdi mdi-pencil", value:"Organizations form"},
-  //{id: "tab7", icon: "mdi mdi-table", value:"Medical facility list"},
-  //{id: "tab8", icon: "mdi mdi-pencil", value:"Medical facility form"},
+  {id: "tab5", icon: "mdi mdi-table", value:"Medical facility list"},
+  {id: "tab6", icon: "mdi mdi-pencil", value:"Medical facility form"},
+  {id: "tab7", icon: "mdi mdi-table", value:"Organizations list"},
+  {id: "tab8", icon: "mdi mdi-pencil", value:"Organizations form"},
+
 	//{id: "tab3", icon: "mdi mdi-book", value:"Documentation"}
 ];
 
@@ -120,15 +145,8 @@ var passes_form_template = {
     {view: "text", name: "sourceAddr", label: "sourceAddr"},
     {view: "text", name: "dstAddr", label: "dstAddr"},
     {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
-   // {view: "richselect", name: "user", label:'user', options: "/api/users/get_medical_names"},
-    //{view: "richselect", name: "user", label:'user', options: "/api/users/get_org_names"},
-   // {view:"datatable", 
-   // columns: [
-   //     { map:"(date)#enddate#",editor:"date",header:"End date", width:120}
-   // ],
-   // data: [
-    //    {id:"1", startdate:"2013-09-26", enddate:"2011-05-15"},
-    //]},
+    {view: "richselect", name: "medicalOrg", label:'Medical Organisation', options: "/api/medical/getnames"},
+    {view: "richselect", name: "workOrg", label:'Work organisation', options: "/api/work/getnames"},
     {
         view: "datepicker", 
         value: new Date(2017,10,9), 
@@ -143,6 +161,52 @@ var passes_form_template = {
      var values = this.getFormView().getValues();
      webix.ajax().post("/api/passes/save", values, submitPass);
    }}
+  ]};
+
+var medical_list_template = {
+  id:"tab5_content",
+  view:"datatable",
+  minHeight:50,
+  autoWidth: true,
+  autoConfig:true,
+  url:"/api/medical/get"
+};
+
+// Single user form template
+var medical_form_template = {
+  id:"tab6_content",
+  view:"form",
+  width: "400",
+  elements:[
+    {view: "text", name: "name", label: "Name"},
+    {view: "text", name: "adress", label: "Adress"},
+    { view:"button",  value:"Submit", id:"bt3", click:function(){
+      var values = this.getFormView().getValues();
+      webix.ajax().post("/api/medical/save", values, submitMedical);
+    }}
+  ]};
+
+var work_list_template = {
+  id:"tab7_content",
+  view:"datatable",
+  minHeight:50,
+  autoWidth: true,
+  autoConfig:true,
+  url:"/api/work/get"
+};
+
+// Single user form template
+var work_form_template = {
+  id:"tab8_content",
+  view:"form",
+  width: "400",
+  elements:[
+    {view: "text", name: "name", label: "Name"},
+    {view: "text", name: "adress", label: "Adress"},
+    { view:"button",  value:"Submit", id:"bt4", click:function(){
+      var values = this.getFormView().getValues();
+      webix.ajax().post("/api/work/save", values, submitWork);
+    }}
   ]};
 
 var ui_template = {
@@ -180,7 +244,10 @@ var ui_template = {
             user_form_template,
             passes_list_template,
             passes_form_template,
-
+            medical_list_template,
+            medical_form_template,
+            work_list_template,
+            work_form_template
         ]   
       }
     ]}

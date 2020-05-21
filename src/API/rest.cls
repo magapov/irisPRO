@@ -13,6 +13,12 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
   <Route Url="/users/getusernames" Method="GET" Call="UsernamesList"/>
   <Route Url="/passes/get" Method="GET" Call="Passes"/>
   <Route Url="/passes/save" Method="POST" Call="SavePass"/>
+  <Route Url="/medical/get" Method="GET" Call="Medicals"/>
+  <Route Url="/medical/save" Method="POST" Call="SaveMedical"/>
+  <Route Url="/medical/getnames" Method="GET" Call="MedicalNamesList"/>
+  <Route Url="/work/save" Method="POST" Call="SaveOrganisation"/>
+  <Route Url="/work/get" Method="GET" Call="Organisations"/>
+  <Route Url="/work/getnames" Method="GET" Call="OrgNamesList"/>
   <Route Url="/_spec" Method="GET" Call="SwaggerSpec" Cors="true"/>
 </Routes>
 }
@@ -72,6 +78,8 @@ ClassMethod SavePass(requestPassObj) As %Status
     set requestPassObj.sourceAddr = %request.Get("sourceAddr")
     set requestPassObj.dstAddr = %request.Get("dstAddr")
     set requestPassObj.user = %request.Get("user")
+    set requestPassObj.medicalOrg = %request.Get("medicalOrg")
+    set requestPassObj.workOrg = %request.Get("workOrg")
     set result = ##class(PassDB.Pass).SavePass(requestPassObj)
     write result.%ToJSON()
   }
@@ -93,18 +101,68 @@ ClassMethod Passes() As %Status
 
 ClassMethod MedicalNamesList() As %Status
 {
-  set usersObj = ##class(PassDB.MedicalNames).%New()
-  do usersObj.getMedicalNames(.usersArray)
-  write usersArray.%ToJSON()
+  set medicalsObj = ##class(PassDB.Medical).%New()
+  do medicalsObj.getNames(.medicalsArray)
+  write medicalsArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod Medicals() As %Status
+{
+  set medicalsObj = ##class(PassDB.Medical).%New()
+  do medicalsObj.getAll(.medicalsArray)
+  write medicalsArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod SaveMedical() As %Status
+{
+  Try {
+    set requestMedicalObj = {}
+    set requestMedicalObj.name = %request.Get("name")
+    set requestMedicalObj.adress = %request.Get("adress")
+    set result = ##class(PassDB.Medical).saveMedical(requestMedicalObj)
+    write result.%ToJSON()
+  }
+  Catch exception {
+    set result = {"result": false}
+    set result.message = $ZCVT(exception.Name_" "_exception.Location, "O", "HTML")
+    write result.%ToJSON()
+  }
+  Quit $$$OK
+}
+
+ClassMethod Organisations() As %Status
+{
+  set orgsObj = ##class(PassDB.Organisation).%New()
+  do orgsObj.getAll(.orgsArray)
+  write orgsArray.%ToJSON()
   Return $$$OK
 }
 
 ClassMethod OrgNamesList() As %Status
 {
-  set usersObj = ##class(PassDB.OrgNames).%New()
-  do usersObj.getOrgNames(.usersArray)
-  write usersArray.%ToJSON()
+  set orgsObj = ##class(PassDB.Organisation).%New()
+  do orgsObj.getNames(.orgsArray)
+  write orgsArray.%ToJSON()
   Return $$$OK
+}
+
+ClassMethod SaveOrganisation() As %Status
+{
+  Try {
+    set requestOrgObj = {}
+    set requestOrgObj.name = %request.Get("name")
+    set requestOrgObj.adress = %request.Get("adress")
+    set result = ##class(PassDB.Organisation).saveOrganisation(requestOrgObj)
+    write result.%ToJSON()
+  }
+  Catch exception {
+    set result = {"result": false}
+    set result.message = $ZCVT(exception.Name_" "_exception.Location, "O", "HTML")
+    write result.%ToJSON()
+  }
+  Quit $$$OK
 }
 
 ClassMethod SwaggerSpec() As %Status

@@ -17,25 +17,13 @@ Property medicalOrg As PassDB.Medical;
 
 Property workOrg As PassDB.Organisation;
 
-Method createPass(user As PassDB.Users, docID As %Integer, date As %Date, reasonType As %String, sourceAddr As %String, dstAddr As %String) As %Boolean
-{
-    do Pass.userSetObjectId(user)
-    set ##this.docID = docID
-    set ##this.date = date
-    set ##this.reasonType = reasonType
-    set ##this.sourceAddr = sourceAddr
-    set ##this.dstAddr = dstAddr
-    set result = ##this.%Save()
-    quit result
-}
-
 Method getPasses(data) As %String
 {
     set data = []
     &sql(
         DECLARE MyCursor CURSOR FOR
-        SELECT ID, "date", docID, dstAddr, reasonType, sourceAddr, "user"
-        INTO :id, :date, :docID, :dstAddr, :reasonType, :sourceAddr, :user
+        SELECT ID, "date", docID, dstAddr, reasonType, sourceAddr, "user", medicalOrg, workOrg
+        INTO :id, :date, :docID, :dstAddr, :reasonType, :sourceAddr, :user, :medicalOrg, :workOrg
         FROM PassDB.Pass
     )
 
@@ -58,6 +46,8 @@ ClassMethod SavePass(requestPassObj) As %Status
   set result = {}
   set obj = ##class(PassDB.Pass).%New()
   do obj.userSetObjectId(requestPassObj.user)
+  do obj.medicalOrgSetObjectId(requestPassObj.medicalOrg)
+  do obj.workOrgSetObjectId(requestPassObj.workOrg)
   set obj.date = requestPassObj.date
   set obj.docID = requestPassObj.docID
   set obj.reasonType = requestPassObj.reasonType
