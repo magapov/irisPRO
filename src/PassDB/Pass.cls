@@ -97,6 +97,12 @@ Storage Default
 <Value name="7">
 <Value>user</Value>
 </Value>
+<Value name="8">
+<Value>medicalOrg</Value>
+</Value>
+<Value name="9">
+<Value>workOrg</Value>
+</Value>
 </Data>
 <DataLocation>^PassDB.PassD</DataLocation>
 <DefaultData>PassDefaultData</DefaultData>

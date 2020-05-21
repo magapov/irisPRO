@@ -44,7 +44,7 @@ Method getUsers(data) As %String
  	quit
 }
 
-ClassMethod getUsernames(data) As %String
+Method getUsernames(data) As %String
 {
 	set data = []
 	&sql(
@@ -54,7 +54,6 @@ ClassMethod getUsernames(data) As %String
 	    FROM PassDB.Users
  	)
 	
- 	//вариант в массив INTO :singleUserData()
  	&sql(OPEN MyCursor)
  	
   FOR { 
@@ -69,7 +68,7 @@ ClassMethod getUsernames(data) As %String
  	quit
 }
 
-ClassMethod SaveUser(requestUserObj) As %Status
+ClassMethod saveUser(requestUserObj) As %Status
 {
   set result = {}
   set obj = ##class(PassDB.Users).%New()
@@ -85,6 +84,30 @@ ClassMethod SaveUser(requestUserObj) As %Status
   set result.message = ErrorMessage
 
   return result
+}
+
+ClassMethod deleteUser(ID As %Integer) As %Status
+{
+    set result = ##class(PassDB.Users).%DeleteId(ID)
+    Return result
+}
+
+ClassMethod updateUser(ID As %Integer, fname As %String = "", sname As %String = "", age As %Decimal = -1, sex As %String = "") As %Status
+{
+	set obj = ##class(PassDB.Users).%OpenId(ID)
+	If fname '= "" {
+		set obj.fname = fname
+	}
+	If sname '= "" {
+		set obj.sname = sname
+	}
+	If age '= -1 {
+		set obj.age = age
+	}
+	If sex '= "" {
+		set obj.sex = sex
+	}
+	return obj.%Save()
 }
 
 Storage Default

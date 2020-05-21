@@ -25,7 +25,7 @@ ClassMethod SaveUser() As %Status
     set requestUserObj.sname = %request.Get("sname_f")
     set requestUserObj.age = %request.Get("age_f")
     set requestUserObj.sex = %request.Get("sex_f")
-    set result = ##class(PassDB.Users).SaveUser(requestUserObj)
+    set result = ##class(PassDB.Users).saveUser(requestUserObj)
     write result.%ToJSON()
   }
   Catch exception {
@@ -106,7 +106,6 @@ ClassMethod OrgNamesList() As %Status
   write usersArray.%ToJSON()
   Return $$$OK
 }
-
 
 ClassMethod SwaggerSpec() As %Status
 {
