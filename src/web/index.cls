@@ -66,12 +66,15 @@ var menu_data = [
 
 var user_list_template = {
   id:"tab1_content",
-  view:"list",
-  template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
-  type:{
-    height:60
-  },
-  select:true,
+  view:"datatable",
+  //template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
+  //type:{
+  //  height:60
+  //},
+  //select:true,
+  minHeight:50,
+  autoWidth: true,
+  autoConfig:true,
   url:"/api/users/get"
 };
 
@@ -94,12 +97,15 @@ var user_form_template = {
 
 var passes_list_template = {
   id:"tab3_content",
-  view:"list",
-  template:"<div style='padding-left:18px'> First user:#user#, document ID:#docID#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
-  type:{
-    height:60
-  },
-  select:true,
+  view:"datatable",
+  //template:"<div style='padding-left:18px'> First user:#user#, document ID:#docID#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
+  //type:{
+  //  height:60
+  //},
+  //select:true,
+  minHeight:50,
+  autoWidth: true,
+  autoConfig:true,
   url:"/api/passes/get"
   };
 
@@ -114,6 +120,8 @@ var passes_form_template = {
     {view: "text", name: "sourceAddr", label: "sourceAddr"},
     {view: "text", name: "dstAddr", label: "dstAddr"},
     {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
+   // {view: "richselect", name: "user", label:'user', options: "/api/users/get_medical_names"},
+    //{view: "richselect", name: "user", label:'user', options: "/api/users/get_org_names"},
    // {view:"datatable", 
    // columns: [
    //     { map:"(date)#enddate#",editor:"date",header:"End date", width:120}

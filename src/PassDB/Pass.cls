@@ -13,6 +13,10 @@ Property sourceAddr As %String;
 
 Property dstAddr As %String;
 
+Property medicalOrg As PassDB.Medical;
+
+Property workOrg As PassDB.Organisation;
+
 Method createPass(user As PassDB.Users, docID As %Integer, date As %Date, reasonType As %String, sourceAddr As %String, dstAddr As %String) As %Boolean
 {
     do Pass.userSetObjectId(user)

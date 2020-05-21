@@ -91,6 +91,23 @@ ClassMethod Passes() As %Status
   Return $$$OK
 }
 
+ClassMethod MedicalNamesList() As %Status
+{
+  set usersObj = ##class(PassDB.MedicalNames).%New()
+  do usersObj.getMedicalNames(.usersArray)
+  write usersArray.%ToJSON()
+  Return $$$OK
+}
+
+ClassMethod OrgNamesList() As %Status
+{
+  set usersObj = ##class(PassDB.OrgNames).%New()
+  do usersObj.getOrgNames(.usersArray)
+  write usersArray.%ToJSON()
+  Return $$$OK
+}
+
+
 ClassMethod SwaggerSpec() As %Status
 {
   Set tSC = ##class(%REST.API).GetWebRESTApplication($NAMESPACE, %request.Application, .swagger)
