@@ -33,7 +33,7 @@ Method getPasses(data) As %String
         &sql(FETCH MyCursor)
         if (SQLCODE) quit
 
-        set obj = {"id": (id), "user": (user), "docID": (docID), "date": (date), "reasonType": (reasonType), "sourceAddr": (sourceAddr), "dstAddr": (dstAddr)}
+        set obj = {"id": (id), "user": (user), "docID": (docID), "date": (date), "reasonType": (reasonType), "sourceAddr": (sourceAddr), "dstAddr": (dstAddr), "medicalOrg": (medicalOrg), "workOrg": (workOrg)}
         do data.%Push(obj)
     }
     &sql(CLOSE MyCursor)

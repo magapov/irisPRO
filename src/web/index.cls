@@ -177,6 +177,7 @@ var medical_form_template = {
   id:"tab6_content",
   view:"form",
   width: "400",
+  height: "800",
   elements:[
     {view: "text", name: "name", label: "Name"},
     {view: "text", name: "adress", label: "Adress"},
@@ -200,6 +201,7 @@ var work_form_template = {
   id:"tab8_content",
   view:"form",
   width: "400",
+  height: "800",
   elements:[
     {view: "text", name: "name", label: "Name"},
     {view: "text", name: "adress", label: "Adress"},
