@@ -253,7 +253,7 @@ var passes_form_template = {
         view: "datepicker", 
         value: new Date(), 
         label: "Select Date", 
-        timepicker: true,
+        timepicker: false,
         name: "date"
     },
     

@@ -5,7 +5,7 @@ Property user As PassDB.Users;
 
 Property docID As %Integer;
 
-Property date As %String;
+Property date As %Date;
 
 Property reasonType As %String;
 
@@ -72,7 +72,9 @@ Method getPasses(data) As %String
         &sql(FETCH MyCursor)
         if (SQLCODE) quit
 
-        set obj = {"id": (id), "user": (user), "docID": (docID), "date": (date), "reasonType": (reasonType), "sourceAddr": (sourceAddr), "dstAddr": (dstAddr), "medicalOrg": (medicalOrg), "jobOrg": (jobOrg)}
+        set r = ..%OpenId(id)
+
+        set obj = {"id": (id), "user": (r.user.fname_" "_r.user.sname), "docID": (docID), "date": ($ZDate(date, 3)), "reasonType": (reasonType), "sourceAddr": (sourceAddr), "dstAddr": (dstAddr), "medicalOrg": (r.medicalOrg.name), "jobOrg": (r.jobOrg.name)}
         do data.%Push(obj)
     }
     &sql(CLOSE MyCursor)
@@ -87,7 +89,7 @@ ClassMethod SavePass(requestPassObj) As %Status
   do obj.userSetObjectId(requestPassObj.user)
   do obj.medicalOrgSetObjectId(requestPassObj.medicalOrg)
   do obj.jobOrgSetObjectId(requestPassObj.jobOrg)
-  set obj.date = requestPassObj.date
+  set obj.date = $ZDateh(requestPassObj.date, 3)
   set obj.docID = requestPassObj.docID
   set obj.reasonType = requestPassObj.reasonType
   set obj.sourceAddr = requestPassObj.sourceAddr
