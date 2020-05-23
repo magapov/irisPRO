@@ -118,7 +118,13 @@ var user_list_template = {
   //select:true,
   minHeight:50,
   autoWidth: true,
-  autoConfig:true,
+  columns:[
+    { id:"id", header:"Id",  		width:50},
+    { id:"fname",	header:"First name", width:200},
+    { id:"sname", header:"Surname", 	width:200},
+    { id:"age", header:"Age", 	width:100},
+    { id:"sex", header:"Sex", 	width:200},
+  ],
   url:"/passesapp/users/get"
 };
 
@@ -244,7 +250,11 @@ var medical_list_template = {
   view:"datatable",
   minHeight:50,
   autoWidth: true,
-  autoConfig:true,
+  columns: [
+    { id:"id", header:"Id", width:50},
+    { id:"name", header:"Name", width:200},
+    { id:"adress", header:"Adress", width:300},
+  ],
   url:"/passesapp/medical/get"
 };
 
@@ -268,7 +278,11 @@ var work_list_template = {
   view:"datatable",
   minHeight:50,
   autoWidth: true,
-  autoConfig:true,
+  columns: [
+    { id:"id", header:"Id", width:50},
+    { id:"name", header:"Name", width:200},
+    { id:"adress", header:"Adress", width:300},
+  ],
   url:"/passesapp/work/get"
 };
 
