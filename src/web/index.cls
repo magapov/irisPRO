@@ -34,7 +34,19 @@ ClassMethod body() As %Status
     let message;
     if (data.result) {
       message = { type:"success", text: "Pass is saved", expire:-1};
-      $$('tab4_content').clear();
+      $$('tab2_create_content').clear();
+    }
+    else
+      message = { type:"error", text: data.message, expire:-1};
+    webix.message(message);
+  } 
+
+  var submitUser = (rawData) => {
+    let data = JSON.parse(rawData);
+    let message;
+    if (data.result) {
+      message = { type:"success", text: "User is saved", expire:-1};
+      $$('tab1_create_content').clear();
     }
     else
       message = { type:"error", text: data.message, expire:-1};
@@ -46,7 +58,7 @@ ClassMethod body() As %Status
     let message;
     if (data.result) {
       message = { type:"success", text: "Medical is saved", expire:-1};
-      $$('tab6_content').clear();
+      $$('tab3_create_content').clear();
     }
     else
       message = { type:"error", text: data.message, expire:-1};
@@ -58,7 +70,7 @@ ClassMethod body() As %Status
     let message;
     if (data.result) {
       message = { type:"success", text: "Work organisation is saved", expire:-1};
-      $$('tab8_content').clear();
+      $$('tab4_create_content').clear();
     }
     else
       message = { type:"error", text: data.message, expire:-1};
@@ -102,7 +114,7 @@ var menu_data = [
     {id: "tab3_show", icon: "mdi mdi-table", value:"Medical facilities list"},
     {id: "tab3_create", icon: "mdi mdi-pencil", value:"Create medical facility"},
   ]},
-  {id: "tab4", icon: "mdi mdi-tie", value:"Job rganizations", data:[
+  {id: "tab4", icon: "mdi mdi-tie", value:"Job organizations", data:[
     {id: "tab4_show", icon: "mdi mdi-table", value:"Job organizations list"},
     {id: "tab4_create", icon: "mdi mdi-pencil", value:"Create job organization"},
   ]},
@@ -236,7 +248,7 @@ var passes_form_template = {
     {template:"If you have a trip to a medical facility, select it. In other side - don't select anything", type:"section"},
     {view: "richselect", name: "medicalOrg", label:'Medical organisation', options: "/passesapp/medical/getnames", labelWidth: 150},
     {template:"If you have a trip to he job, select your organisation. In other side - don't select anything", type:"section"},
-    {view: "richselect", name: "workOrg", label:'Work organisation', options: "/passesapp/work/getnames", labelWidth: 150},
+    {view: "richselect", name: "jobOrg", label:'Work organisation', options: "/passesapp/work/getnames", labelWidth: 150},
     {
         view: "datepicker", 
         value: new Date(), 
