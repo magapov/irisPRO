@@ -132,7 +132,7 @@ var user_list_template = {
 var user_form_template = {
   id:"tab1_create_content",
   view:"form",
-  width: "400",
+  autoWidth: true,
   height: "800",
   elements:[
     {view: "text", name: "fname_f", label: "First name"},
@@ -219,19 +219,27 @@ var passes_list_template = {
 var passes_form_template = {
   id:"tab2_create_content",
   view:"form",
-  width: "400",
-  height: "800",
+  autoWidth: true,
+  autoHeight: true,
+  scroll:true,
   elements:[
-    {view: "text", name: "docID", label: "docID"},
-    {view: "text", name: "reasonType", label: "reasonType"},
-    {view: "text", name: "sourceAddr", label: "sourceAddr"},
-    {view: "text", name: "dstAddr", label: "dstAddr"},
-    {view: "richselect", name: "user", label:'user', options: "/passesapp/users/getusernames"},
-    {view: "richselect", name: "medicalOrg", label:'Medical Organisation', options: "/passesapp/medical/getnames"},
+    { template:"Enter your document (passport/driving license) ID", type:"section"},
+    {view: "text", name: "docID", label: "Document ID"},
+    {template:"Enter reason of the trip (job/trip to a medical facility/other reason)", type:"section"},
+    {view: "text", name: "reasonType", label: "Reason type"},
+    {template:"Enter source adress of the trip", type:"section"},
+    {view: "text", name: "sourceAddr", label: "Source address"},
+    {template:"Enter destination adress of the trip", type:"section"},
+    {view: "text", name: "dstAddr", label: "Destination adress"},
+    {template:"Select user for the pass", type:"section"},
+    {view: "richselect", name: "user", label:'User', options: "/passesapp/users/getusernames"},
+    {template:"If you have a trip to a medical facility, select it. In other side - don't select anything", type:"section"},
+    {view: "richselect", name: "medicalOrg", label:'Medical organisation', options: "/passesapp/medical/getnames"},
+    {template:"If you have a trip to he job, select your organisation. In other side - don't select anything", type:"section"},
     {view: "richselect", name: "workOrg", label:'Work organisation', options: "/passesapp/work/getnames"},
     {
         view: "datepicker", 
-        value: new Date(2017,10,9), 
+        value: new Date(), 
         label: "Select Date", 
         timepicker: true,
         name: "date"
@@ -242,7 +250,8 @@ var passes_form_template = {
      console.log('button Pass')
      var values = this.getFormView().getValues();
      webix.ajax().post("/passesapp/passes/save", values, submitPass);
-   }}
+   }},
+ 
   ]};
 
 var medical_list_template = {
