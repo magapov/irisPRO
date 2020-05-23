@@ -79,7 +79,7 @@ ClassMethod SavePass(requestPassObj) As %Status
     set requestPassObj.dstAddr = %request.Get("dstAddr")
     set requestPassObj.user = %request.Get("user")
     set requestPassObj.medicalOrg = %request.Get("medicalOrg")
-    set requestPassObj.workOrg = %request.Get("workOrg")
+    set requestPassObj.jobOrg = %request.Get("jobOrg")
     set result = ##class(PassDB.Pass).SavePass(requestPassObj)
     write result.%ToJSON()
   }
