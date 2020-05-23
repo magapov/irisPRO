@@ -108,6 +108,7 @@ var user_form_template = {
   id:"tab2_content",
   view:"form",
   width: "400",
+  height: "800",
   elements:[
     {view: "text", name: "fname_f", label: "First name"},
     {view: "text", name: "sname_f", label: "Surname"},
@@ -122,23 +123,78 @@ var user_form_template = {
 
 var passes_list_template = {
   id:"tab3_content",
-  view:"datatable",
-  //template:"<div style='padding-left:18px'> First user:#user#, document ID:#docID#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
-  //type:{
-  //  height:60
-  //},
-  //select:true,
-  minHeight:50,
-  autoWidth: true,
-  autoConfig:true,
-  url:"/api/passes/get"
-  };
+  autowidth: true,
+  rows: [
+  { 
+      id: "tab3_dt",
+      view:"datatable",
+      //template:"<div style='padding-left:18px'> First user:#user#, document ID:#docID#, date:#date#, reason type:#reasonType# source address:#sourceAddr# destination address#dstAddr#</div>",
+      //type:{
+      //  height:60
+      //},
+      //select:true,
+      minHeight:50,
+      autoWidth: true,
+      columns:[
+        { id:"id", header:"Id",  		width:50},
+        { id:"docID", editor:"text",	header:"Document ID", width:200},
+        { id:"date", editor:"text",	header:"Date", 	width:200},
+        { id:"reasonType", editor:"text",	header:"Reason type", 	width:100},
+        { id:"sourceAddr", editor:"text",	header:"Source adress", 	width:200},
+        { id:"dstAddr", editor:"text",	header:"Destination adress", 	width:200},
+        { id:"user",	header:"User", 	width:100},
+        { id:"medicalOrg",	header:"Medical organisation", 	width:100},
+        { id:"workOrg", header:"Work organisation", 	width:100},
+      ],
+      editable:true,
+      editaction:"custom",
+      select: "row",
+      on:{
+        onAfterLoad:function(){
+          if (!this.count())
+            this.showOverlay("Sorry, there is no data");
+        },
+        onItemDblClick:function(id, e, node) {
+          this.editRow(id);
+        }
+      },
+      url:"/api/passes/get"
+    },
+    { cols: [
+//      { view:"button",  value:"Add Empty Row", id:"tab2_add_button", click:function(){
+//          var new_row = { number: "", label: "" , power: ""};
+//          $$("tab2_dt").add(new_row);
+//          webix.ajax().post(CAR_ADD_URL, new_row, addCarFormCallback);
+//      }},
+      { view:"button",  value:"Save Row", id:"tab3_save_button", click:function(){
+        var row_id = $$("tab3_dt").getSelectedId();
+        if(row_id) {
+          var obj = $$("tab3_dt").getSelectedItem(true);
+          var values = obj[0];
+          webix.message(`Selected to edit ${row_id} : ${values}`);
+          webix.ajax().post("/api/passes/edit", values, savePassFormCallback);
+        }
+      }},
+      { view:"button",  value:"Delete Row", id:"tab3_delete_button", click:function(){
+        var row_id = $$("tab3_dt").getSelectedId(true);
+        if(row_id) {
+          var obj = $$("tab3_dt").getSelectedItem(true);
+          var value = obj[0].id;
+          webix.message(`Selected to delete ${value}`);
+          $$("tab2_dt").remove(row_id);
+          webix.ajax().del("/api/passes/delete", {id: value}, deletePassFormCallback);
+        }
+      }}
+    ]}
+  ]
+};
 
 // Single pass form template
 var passes_form_template = {
   id:"tab4_content",
   view:"form",
   width: "400",
+  height: "800",
   elements:[
     {view: "text", name: "docID", label: "docID"},
     {view: "text", name: "reasonType", label: "reasonType"},
