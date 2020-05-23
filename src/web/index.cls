@@ -28,17 +28,6 @@ ClassMethod body() As %Status
 {
   &JS<
 <script type="text/javascript">
-  var submitUser = (rawData) => {
-    let data = JSON.parse(rawData);
-    let message;
-    if (data.result) {
-      message = { type:"success", text: "User is saved", expire:-1};
-      $$('tab2_content').clear();
-    }
-    else
-      message = { type:"error", text: data.message, expire:-1};
-    webix.message(message);
-  }
 
   var submitPass = (rawData) => {
     let data = JSON.parse(rawData);
@@ -101,20 +90,26 @@ var savePassFormCallback = (rawData) => {
 };
 
 var menu_data = [
-	{id: "tab1", icon: "mdi mdi-table", value:"Users list"},
-	{id: "tab2", icon: "mdi mdi-pencil", value:"User form"},
-  {id: "tab3", icon: "mdi mdi-table", value:"Passes list"},
-	{id: "tab4", icon: "mdi mdi-pencil", value:"Passes form"},
-  {id: "tab5", icon: "mdi mdi-table", value:"Medical facility list"},
-  {id: "tab6", icon: "mdi mdi-pencil", value:"Medical facility form"},
-  {id: "tab7", icon: "mdi mdi-table", value:"Organizations list"},
-  {id: "tab8", icon: "mdi mdi-pencil", value:"Organizations form"},
-
-	//{id: "tab3", icon: "mdi mdi-book", value:"Documentation"}
+  {id: "tab1", icon: "mdi mdi-account", value:"Users", data: [
+  	{id: "tab1_show", icon: "mdi mdi-table", value:"Users list"},
+	  {id: "tab1_create", icon: "mdi mdi-pencil", value:"Create user"},
+  ]},
+  {id: "tab2", icon: "mdi mdi-book", value:"Passes", data:[
+    {id: "tab2_show", icon: "mdi mdi-table", value:"Passes list"},
+	  {id: "tab2_create", icon: "mdi mdi-pencil", value:"Create pass"},
+  ]},
+  {id: "tab3", icon: "mdi mdi-hospital", value:"Medical facilities", data:[
+    {id: "tab3_show", icon: "mdi mdi-table", value:"Medical facilities list"},
+    {id: "tab3_create", icon: "mdi mdi-pencil", value:"Create medical facility"},
+  ]},
+  {id: "tab4", icon: "mdi mdi-tie", value:"Job rganizations", data:[
+    {id: "tab4_show", icon: "mdi mdi-table", value:"Job organizations list"},
+    {id: "tab4_create", icon: "mdi mdi-pencil", value:"Create job organization"},
+  ]},
 ];
 
 var user_list_template = {
-  id:"tab1_content",
+  id:"tab1_show_content",
   view:"datatable",
   //template:"<div style='padding-left:18px'> First name:#fname#, surname:#sname#, age:#age#, sex:#sex# </div>",
   //type:{
@@ -129,7 +124,7 @@ var user_list_template = {
 
 // Single user form template
 var user_form_template = {
-  id:"tab2_content",
+  id:"tab1_create_content",
   view:"form",
   width: "400",
   height: "800",
@@ -146,7 +141,7 @@ var user_form_template = {
   ]};
 
 var passes_list_template = {
-  id:"tab3_content",
+  id:"tab2_show_content",
   autowidth: true,
   rows: [
   { 
@@ -190,7 +185,7 @@ var passes_list_template = {
 //          $$("tab2_dt").add(new_row);
 //          webix.ajax().post(CAR_ADD_URL, new_row, addCarFormCallback);
 //      }},
-      { view:"button",  value:"Save Row", id:"tab3_save_button", click:function(){
+      { view:"button",  value:"Save updated row", id:"tab3_save_button", click:function(){
         var row_id = $$("tab3_dt").getSelectedId();
         if(row_id) {
           var obj = $$("tab3_dt").getSelectedItem(true);
@@ -216,7 +211,7 @@ var passes_list_template = {
 
 // Single pass form template
 var passes_form_template = {
-  id:"tab4_content",
+  id:"tab2_create_content",
   view:"form",
   width: "400",
   height: "800",
@@ -245,7 +240,7 @@ var passes_form_template = {
   ]};
 
 var medical_list_template = {
-  id:"tab5_content",
+  id:"tab3_show_content",
   view:"datatable",
   minHeight:50,
   autoWidth: true,
@@ -255,7 +250,7 @@ var medical_list_template = {
 
 // Single user form template
 var medical_form_template = {
-  id:"tab6_content",
+  id:"tab3_create_content",
   view:"form",
   width: "400",
   height: "800",
@@ -269,7 +264,7 @@ var medical_form_template = {
   ]};
 
 var work_list_template = {
-  id:"tab7_content",
+  id:"tab4_show_content",
   view:"datatable",
   minHeight:50,
   autoWidth: true,
@@ -279,7 +274,7 @@ var work_list_template = {
 
 // Single user form template
 var work_form_template = {
-  id:"tab8_content",
+  id:"tab4_create_content",
   view:"form",
   width: "400",
   height: "800",
