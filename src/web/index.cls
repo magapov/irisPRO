@@ -76,6 +76,30 @@ ClassMethod body() As %Status
     webix.message(message);
   } 
 
+var deletePassFormCallback = (rawData) => {
+  let data = JSON.parse(rawData);
+  let message;
+  if (data.result) {
+    message = { type:"success", text: "Pass is deleted", expire: 2000};
+  }
+  else {
+    message = { type:"error", text: data.message, expire:2000};
+  }
+  webix.message(message);
+};
+
+var savePassFormCallback = (rawData) => {
+  let data = JSON.parse(rawData);
+  let message;
+  if (data.result) {
+    message = { type:"success", text: "Pass is edited", expire: 2000};
+  }
+  else {
+    message = { type:"error", text: data.message, expire:2000};
+  }
+  webix.message(message);
+};
+
 var menu_data = [
 	{id: "tab1", icon: "mdi mdi-table", value:"Users list"},
 	{id: "tab2", icon: "mdi mdi-pencil", value:"User form"},
@@ -100,7 +124,7 @@ var user_list_template = {
   minHeight:50,
   autoWidth: true,
   autoConfig:true,
-  url:"/api/users/get"
+  url:"/passesapp/users/get"
 };
 
 // Single user form template
@@ -117,7 +141,7 @@ var user_form_template = {
     { view:"button",  value:"Submit", id:"btn1", click:function(){
       console.log('button user');
       var values = this.getFormView().getValues();
-      webix.ajax().post("/api/users/save", values, submitUser);
+      webix.ajax().post("/passesapp/users/save", values, submitUser);
     }}
   ]};
 
@@ -144,7 +168,7 @@ var passes_list_template = {
         { id:"dstAddr", editor:"text",	header:"Destination adress", 	width:200},
         { id:"user",	header:"User", 	width:100},
         { id:"medicalOrg",	header:"Medical organisation", 	width:100},
-        { id:"workOrg", header:"Work organisation", 	width:100},
+        { id:"jobOrg", header:"Job organisation", 	width:100},
       ],
       editable:true,
       editaction:"custom",
@@ -158,7 +182,7 @@ var passes_list_template = {
           this.editRow(id);
         }
       },
-      url:"/api/passes/get"
+      url:"/passesapp/passes/get"
     },
     { cols: [
 //      { view:"button",  value:"Add Empty Row", id:"tab2_add_button", click:function(){
@@ -172,17 +196,18 @@ var passes_list_template = {
           var obj = $$("tab3_dt").getSelectedItem(true);
           var values = obj[0];
           webix.message(`Selected to edit ${row_id} : ${values}`);
-          webix.ajax().post("/api/passes/edit", values, savePassFormCallback);
+          webix.ajax().post("/passesapp/passes/edit", values, savePassFormCallback);
         }
       }},
       { view:"button",  value:"Delete Row", id:"tab3_delete_button", click:function(){
         var row_id = $$("tab3_dt").getSelectedId(true);
+        console.log(row_id)
         if(row_id) {
           var obj = $$("tab3_dt").getSelectedItem(true);
           var value = obj[0].id;
           webix.message(`Selected to delete ${value}`);
-          $$("tab2_dt").remove(row_id);
-          webix.ajax().del("/api/passes/delete", {id: value}, deletePassFormCallback);
+          $$("tab3_dt").remove(row_id);
+          webix.ajax().del("/passesapp/passes/delete", {id: value}, deletePassFormCallback);
         }
       }}
     ]}
@@ -200,9 +225,9 @@ var passes_form_template = {
     {view: "text", name: "reasonType", label: "reasonType"},
     {view: "text", name: "sourceAddr", label: "sourceAddr"},
     {view: "text", name: "dstAddr", label: "dstAddr"},
-    {view: "richselect", name: "user", label:'user', options: "/api/users/getusernames"},
-    {view: "richselect", name: "medicalOrg", label:'Medical Organisation', options: "/api/medical/getnames"},
-    {view: "richselect", name: "workOrg", label:'Work organisation', options: "/api/work/getnames"},
+    {view: "richselect", name: "user", label:'user', options: "/passesapp/users/getusernames"},
+    {view: "richselect", name: "medicalOrg", label:'Medical Organisation', options: "/passesapp/medical/getnames"},
+    {view: "richselect", name: "workOrg", label:'Work organisation', options: "/passesapp/work/getnames"},
     {
         view: "datepicker", 
         value: new Date(2017,10,9), 
@@ -215,7 +240,7 @@ var passes_form_template = {
    { view:"button",  value:"Submit", id:"btn2", click:function(){
      console.log('button Pass')
      var values = this.getFormView().getValues();
-     webix.ajax().post("/api/passes/save", values, submitPass);
+     webix.ajax().post("/passesapp/passes/save", values, submitPass);
    }}
   ]};
 
@@ -225,7 +250,7 @@ var medical_list_template = {
   minHeight:50,
   autoWidth: true,
   autoConfig:true,
-  url:"/api/medical/get"
+  url:"/passesapp/medical/get"
 };
 
 // Single user form template
@@ -239,7 +264,7 @@ var medical_form_template = {
     {view: "text", name: "adress", label: "Adress"},
     { view:"button",  value:"Submit", id:"bt3", click:function(){
       var values = this.getFormView().getValues();
-      webix.ajax().post("/api/medical/save", values, submitMedical);
+      webix.ajax().post("/passesapp/medical/save", values, submitMedical);
     }}
   ]};
 
@@ -249,7 +274,7 @@ var work_list_template = {
   minHeight:50,
   autoWidth: true,
   autoConfig:true,
-  url:"/api/work/get"
+  url:"/passesapp/work/get"
 };
 
 // Single user form template
@@ -263,7 +288,7 @@ var work_form_template = {
     {view: "text", name: "adress", label: "Adress"},
     { view:"button",  value:"Submit", id:"bt4", click:function(){
       var values = this.getFormView().getValues();
-      webix.ajax().post("/api/work/save", values, submitWork);
+      webix.ajax().post("/passesapp/work/save", values, submitWork);
     }}
   ]};
 

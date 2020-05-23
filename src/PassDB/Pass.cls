@@ -17,25 +17,43 @@ Property medicalOrg As PassDB.Medical;
 
 Property jobOrg As PassDB.Organisation;
 
-ClassMethod updatePass(ID As %Integer, usr As PassDB.Users, date As %String = "", reason As %String = "", src As %String = "", dst As %String = "", med As PassDB.Medical, job As PassDB.Organisation) As %Status
+ClassMethod updatePass(reqObj) As %DynamicArray
 {
-	set obj = ##class(PassDB.Pass).%OpenId(ID)
-    set obj.user = usr
-	If date '= "" {
+    set Id = reqObj.Get("id")
+    set obj = ..%OpenId(Id)
+	//переделать
+    #; set obj = ##class(PassDB.Pass).%OpenId(reqObj.Get("id"))
+    #; set obj.user = reqObj.Get("usr")
+	set date = reqObj.Get("date")
+    If date '= "" {
 		set obj.date = date
 	}
+
+    set reason = reqObj.Get("reasonType")
 	If reason '= "" {
 		set obj.reasonType = reason
 	}
+
+    set src = reqObj.Get("sourceAddr")
 	If src '= "" {
 		set obj.sourceAddr = src
 	}
+
+    set dst = reqObj.Get("dstAddr")
     If dst '= "" {
 		set obj.dstAddr = dst
 	}
-	set obj.medicalOrg = med
-    set obj.jobOrg = job
-	return obj.%Save()
+	#; set obj.medicalOrg = reqObj.Get("medicalOrg")
+    #; set obj.jobOrg = reqObj.Get("jobOrg")
+	set saveResult = obj.%Save()
+
+    set result = {}
+    if $$$ISOK(saveResult) set result = {"result": true}
+    else  set result = {"result": false}
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(saveResult)
+    set result.message = ErrorMessage
+
+    return result.%ToJSON()
 }
 
 Method getPasses(data) As %String
@@ -86,8 +104,13 @@ ClassMethod SavePass(requestPassObj) As %Status
 
 ClassMethod deletePass(ID As %Integer) As %Status
 {
-    set result = ##class(PassDB.Pass).%DeleteId(ID)
-    Return result
+    set deleteResult = ##class(PassDB.Pass).%DeleteId(ID)
+    set result = {}
+    if $$$ISOK(deleteResult) set result = {"result": true}
+    else  set result = {"result": false}
+    set ErrorMessage = ##class(%SYSTEM.Status).GetErrorText(deleteResult)
+    set result.message = ErrorMessage
+    return result.%ToJSON()
 }
 
 Storage Default

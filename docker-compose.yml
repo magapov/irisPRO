@@ -11,6 +11,5 @@ services:
       - "53773:53773"
     volumes:
       - "~/iris.key:/usr/irissys/mgr/iris.key"
-      - "./app:/irisdev/app"
       - "./irisapp:/usr/irissys/csp/irisapp/"
     container_name: iris_container

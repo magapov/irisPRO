@@ -13,13 +13,14 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
   <Route Url="/users/getusernames" Method="GET" Call="UsernamesList"/>
   <Route Url="/passes/get" Method="GET" Call="Passes"/>
   <Route Url="/passes/save" Method="POST" Call="SavePass"/>
+  <Route Url="/passes/edit" Method="POST" Call="EditPass"/>
+  <Route Url="/passes/delete" Method="DELETE" Call="DeletePass"/>
   <Route Url="/medical/get" Method="GET" Call="Medicals"/>
   <Route Url="/medical/save" Method="POST" Call="SaveMedical"/>
   <Route Url="/medical/getnames" Method="GET" Call="MedicalNamesList"/>
   <Route Url="/work/save" Method="POST" Call="SaveOrganisation"/>
   <Route Url="/work/get" Method="GET" Call="Organisations"/>
   <Route Url="/work/getnames" Method="GET" Call="OrgNamesList"/>
-  <Route Url="/_spec" Method="GET" Call="SwaggerSpec" Cors="true"/>
 </Routes>
 }
 
@@ -97,6 +98,21 @@ ClassMethod Passes() As %Status
   do passsObj.getPasses(.passesArray)
   write passesArray.%ToJSON()
   Return $$$OK
+}
+
+ClassMethod EditPass() As %Status
+{
+  set result = ##class(PassDB.Pass).updatePass(%request)
+  write result
+  return $$$OK
+}
+
+ClassMethod DeletePass() As %Status
+{
+  set id = %request.Get("id")
+  set deleteResult = ##class(PassDB.Pass).deletePass(id)
+  write deleteResult
+  return $$$OK
 }
 
 ClassMethod MedicalNamesList() As %Status
